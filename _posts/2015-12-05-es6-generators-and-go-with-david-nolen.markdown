@@ -76,7 +76,7 @@ function go(machine) {
 }
 {% endhighlight %}
 
-Now we can change "taking thread" code to postpone it's execution and do something what would have not really worked without changes:
+Now we can do something what would have not really worked without changes:
 
 {% highlight javascript %}
 function timeout(iter, t) {
@@ -119,6 +119,8 @@ go(function* () {
 });
 {% endhighlight %}
 
-This illustrates example of adding and reading more than one element to/from channel in non-blocking manner and also way of executing *timeout* function synchronously. But we can create much more advanced scenario.
+One thing to notice is that we are passing one additional argument to our "Go routines": iterator of "Go routine" itself. We can pass it by using *yield* as the first expression of our "Go routines". This way it can have additional capabilities, like way of doing synchronous timeout.
+
+This illustrates example of adding and reading more than one element to/from channel in non-blocking manner, operations which are being executed in parallel. But we can create much more advanced scenario.
 
 [nolen-post]: http://swannodette.github.io/2013/08/24/es6-generators-and-csp/
