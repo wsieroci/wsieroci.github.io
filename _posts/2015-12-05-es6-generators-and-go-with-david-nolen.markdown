@@ -94,6 +94,6 @@ setTimeout(
 , 1000);
 {% endhighlight %}
 
-This only illustrates example of adding and reading more than one element to channel in non-blocking manner. But we can create much more advanced scenario.
+This only illustrates example of adding and reading more than one element to/from channel in non-blocking manner. But we can create much more advanced scenario.
 
 [nolen-post]: http://swannodette.github.io/2013/08/24/es6-generators-and-csp/
