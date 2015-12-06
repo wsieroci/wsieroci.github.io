@@ -40,7 +40,7 @@ But to make it working we have to change code in other places too. Primaraly, we
 
 {% highlight javascript %}
 function* go_(machine, step) {
-  var go_Gen = yield;
+  var goGen_ = yield;
 
   while(!step.done) {
     var arr   = step.value(),
@@ -48,7 +48,7 @@ function* go_(machine, step) {
         value = arr[1];
 
     function next() {
-      go_Gen.next();
+      goGen_.next();
     }
 
     switch (state) {
@@ -71,9 +71,9 @@ Last piece of code is:
 {% highlight javascript %}
 function go(machine) {
   var gen = machine();
-  var go_Gen = go_(gen, gen.next());
-  go_Gen.next();
-  go_Gen.next(go_Gen);
+  var goGen_ = go_(gen, gen.next());
+  goGen_.next();
+  goGen_.next(goGen_);
 }
 {% endhighlight %}
 

@@ -93,7 +93,7 @@
 <p>But to make it working we have to change code in other places too. Primaraly, we have to change <em>go_</em> function and make it a generator itself:</p>
 
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span><span class="o">*</span> <span class="nx">go_</span><span class="p">(</span><span class="nx">machine</span><span class="p">,</span> <span class="nx">step</span><span class="p">)</span> <span class="p">{</span>
-  <span class="kd">var</span> <span class="nx">go_Gen</span> <span class="o">=</span> <span class="k">yield</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">goGen_</span> <span class="o">=</span> <span class="k">yield</span><span class="p">;</span>
 
   <span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="nx">step</span><span class="p">.</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">arr</span>   <span class="o">=</span> <span class="nx">step</span><span class="p">.</span><span class="nx">value</span><span class="p">(),</span>
@@ -101,7 +101,7 @@
         <span class="nx">value</span> <span class="o">=</span> <span class="nx">arr</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
 
     <span class="kd">function</span> <span class="nx">next</span><span class="p">()</span> <span class="p">{</span>
-      <span class="nx">go_Gen</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span>
+      <span class="nx">goGen_</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span>
     <span class="p">}</span>
 
     <span class="k">switch</span> <span class="p">(</span><span class="nx">state</span><span class="p">)</span> <span class="p">{</span>
@@ -122,9 +122,9 @@
 
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">go</span><span class="p">(</span><span class="nx">machine</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">var</span> <span class="nx">gen</span> <span class="o">=</span> <span class="nx">machine</span><span class="p">();</span>
-  <span class="kd">var</span> <span class="nx">go_Gen</span> <span class="o">=</span> <span class="nx">go_</span><span class="p">(</span><span class="nx">gen</span><span class="p">,</span> <span class="nx">gen</span><span class="p">.</span><span class="nx">next</span><span class="p">());</span>
-  <span class="nx">go_Gen</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span>
-  <span class="nx">go_Gen</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="nx">go_Gen</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">goGen_</span> <span class="o">=</span> <span class="nx">go_</span><span class="p">(</span><span class="nx">gen</span><span class="p">,</span> <span class="nx">gen</span><span class="p">.</span><span class="nx">next</span><span class="p">());</span>
+  <span class="nx">goGen_</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span>
+  <span class="nx">goGen_</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="nx">goGen_</span><span class="p">);</span>
 <span class="p">}</span></code></pre></figure>
 
 <p>Now we can change “taking thread” code to postpone it’s execution and do something what would have not really worked without changes:</p>
