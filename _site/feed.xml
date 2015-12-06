@@ -6,13 +6,13 @@
 </description>
     <link>http://wsieroci.github.io/</link>
     <atom:link href="http://wsieroci.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 06 Dec 2015 01:04:04 -0800</pubDate>
-    <lastBuildDate>Sun, 06 Dec 2015 01:04:04 -0800</lastBuildDate>
+    <pubDate>Sun, 06 Dec 2015 01:34:58 -0800</pubDate>
+    <lastBuildDate>Sun, 06 Dec 2015 01:34:58 -0800</lastBuildDate>
     <generator>Jekyll v3.0.1</generator>
     
       <item>
         <title>ES6 generators and Go style in JavaScript with David Nolen</title>
-        <description>&lt;p&gt;Today I have stumbled upon David Nolen’s &lt;a href=&quot;http://swannodette.github.io/2013/08/24/es6-generators-and-csp/&quot;&gt;post&lt;/a&gt; titled &lt;code class=&quot;highlighter-rouge&quot;&gt;ES6 Generators Deliver Go Style Concurrency&lt;/code&gt;. As title suggests it is a post about trying to accomplish “Go style parallel programming model” in JavaScript, by using one of the most powerful ES6 features called Generators. However, I found this implementation quite “poor” because it forces “Go channels” (implemented as arrays) to have only one element inside. I was wondering for a while how this solution could be improved and I found quite simple solution I want to present here.&lt;/p&gt;
+        <description>&lt;p&gt;Today I have stumbled upon David Nolen’s &lt;a href=&quot;http://swannodette.github.io/2013/08/24/es6-generators-and-csp/&quot;&gt;post&lt;/a&gt; titled &lt;code class=&quot;highlighter-rouge&quot;&gt;ES6 Generators Deliver Go Style Concurrency&lt;/code&gt;. As title suggests it is post about trying to accomplish “Go style parallel programming model” in JavaScript, by using one of the most powerful ES6 features called Generators. However, I found this implementation quite “poor” because it forces “Go channels” (implemented as arrays) to have only one element inside. I was wondering for a while how this solution could be improved and I found quite simple solution I want to present here.&lt;/p&gt;
 
 &lt;p&gt;For those of you who don’t know &lt;code class=&quot;highlighter-rouge&quot;&gt;Go&lt;/code&gt;: it is a language whose one of the core features is possibility to spawn “Go routines”. They are lightweight threads. Communication between them can be done using Channels. Channels are basicly queues. When one thread wants to read from a channel and channel is empty then it has to wait. Putting and getting data from channels are atomic operations. By using this style of programming we can write synchronous code in asynchronous environment. What is quite neat.&lt;/p&gt;
 
@@ -92,7 +92,7 @@
   &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;This only illustrates example of adding and reading more than one element to channel in non-blocking manner. But we can create much more advanced scenario.&lt;/p&gt;
+&lt;p&gt;This only illustrates example of adding and reading more than one element to/from channel in non-blocking manner. But we can create much more advanced scenario.&lt;/p&gt;
 
 </description>
         <pubDate>Sat, 05 Dec 2015 23:14:29 -0800</pubDate>

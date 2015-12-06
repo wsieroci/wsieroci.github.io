@@ -7,8 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>ES6 generators and Go style in JavaScript with David Nolen</title>
-  <meta name="description" content="Today I have stumbled upon David Nolen’s post titled ES6 Generators Deliver Go Style Concurrency. As title suggests it is a post about trying to accomplish “...">
-
+  <meta name="description" content="Today I have stumbled upon David Nolen’s post titled ES6 Generators Deliver Go Style Concurrency. As title suggests it is post about trying to accomplish “Go...">
+  <link href='https://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="/css/main.css">
   <link rel="canonical" href="http://wsieroci.github.io/nolen/es6/go/generators/2015/12/05/es6-generators-and-go-with-david-nolen.html">
   <link rel="alternate" type="application/rss+xml" title="wsieroci's things" href="http://wsieroci.github.io/feed.xml">
@@ -62,7 +62,7 @@
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>Today I have stumbled upon David Nolen’s <a href="http://swannodette.github.io/2013/08/24/es6-generators-and-csp/">post</a> titled <code class="highlighter-rouge">ES6 Generators Deliver Go Style Concurrency</code>. As title suggests it is a post about trying to accomplish “Go style parallel programming model” in JavaScript, by using one of the most powerful ES6 features called Generators. However, I found this implementation quite “poor” because it forces “Go channels” (implemented as arrays) to have only one element inside. I was wondering for a while how this solution could be improved and I found quite simple solution I want to present here.</p>
+    <p>Today I have stumbled upon David Nolen’s <a href="http://swannodette.github.io/2013/08/24/es6-generators-and-csp/">post</a> titled <code class="highlighter-rouge">ES6 Generators Deliver Go Style Concurrency</code>. As title suggests it is post about trying to accomplish “Go style parallel programming model” in JavaScript, by using one of the most powerful ES6 features called Generators. However, I found this implementation quite “poor” because it forces “Go channels” (implemented as arrays) to have only one element inside. I was wondering for a while how this solution could be improved and I found quite simple solution I want to present here.</p>
 
 <p>For those of you who don’t know <code class="highlighter-rouge">Go</code>: it is a language whose one of the core features is possibility to spawn “Go routines”. They are lightweight threads. Communication between them can be done using Channels. Channels are basicly queues. When one thread wants to read from a channel and channel is empty then it has to wait. Putting and getting data from channels are atomic operations. By using this style of programming we can write synchronous code in asynchronous environment. What is quite neat.</p>
 
@@ -142,7 +142,7 @@
   <span class="p">})</span>
 <span class="p">,</span> <span class="mi">1000</span><span class="p">);</span></code></pre></figure>
 
-<p>This only illustrates example of adding and reading more than one element to channel in non-blocking manner. But we can create much more advanced scenario.</p>
+<p>This only illustrates example of adding and reading more than one element to/from channel in non-blocking manner. But we can create much more advanced scenario.</p>
 
 
   </div>
