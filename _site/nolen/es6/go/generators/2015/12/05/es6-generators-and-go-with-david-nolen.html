@@ -127,7 +127,7 @@
   <span class="nx">go_Gen</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="nx">go_Gen</span><span class="p">);</span>
 <span class="p">}</span></code></pre></figure>
 
-<p>Now we can change “putting thread” code and do something what would have not really worked without changes:</p>
+<p>Now we can change “taking thread” code to postpone it’s execution and do something what would have not really worked without changes:</p>
 
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">setTimeout</span><span class="p">(</span>
   <span class="nx">go</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="kd">function</span><span class="o">*</span> <span class="p">()</span> <span class="p">{</span>

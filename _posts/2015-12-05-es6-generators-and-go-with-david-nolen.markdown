@@ -77,7 +77,7 @@ function go(machine) {
 }
 {% endhighlight %}
 
-Now we can change "putting thread" code and do something what would have not really worked without changes:
+Now we can change "taking thread" code to postpone it's execution and do something what would have not really worked without changes:
 
 {% highlight javascript %}
 setTimeout(
