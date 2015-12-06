@@ -51,10 +51,10 @@ function* go_(machine, step) {
 
     switch (state) {
       case "park":
-        yield setTimeout(goIterNext, 0);
+        yield setImmediate(goIterNext);
         break;
       case "continue":
-        yield setTimeout(goIterNext, 0);
+        yield setImmediate(goIterNext);
         step = machine.next(value);
         break;
     }
@@ -62,7 +62,7 @@ function* go_(machine, step) {
 }
 {% endhighlight %}
 
-By yielding asynchronous callback *next* by *setImmediate* we are pausing and resuming "local event loop" of our "Go routine". This way we let our "Go routines" work in "parallel" - of course JavaScript doesn't let true concurrency without Web Workers.
+By yielding asynchronous callback *goIterNext* by *setImmediate* we are pausing and resuming "local event loop" of our "Go routine". This way we let our "Go routines" work in "parallel" - of course JavaScript doesn't let true concurrency without Web Workers.
 
 Last piece of code is:
 
