@@ -40,23 +40,21 @@ But to make it working we have to change code in other places too. Primaraly, we
 
 {% highlight javascript %}
 function* go_(machine, step) {
-  var goGen_ = yield;
+  var goIter_ = yield;
 
   while(!step.done) {
     var arr   = step.value(),
         state = arr[0],
         value = arr[1];
 
-    function next() {
-      goGen_.next();
-    }
+    var goIterNext = goIter_.next.bind(goIter_);
 
     switch (state) {
       case "park":
-        yield setImmediate(next);
+        yield setTimeout(goIterNext, 0);
         break;
       case "continue":
-        yield setImmediate(next);
+        yield setTimeout(goIterNext, 0);
         step = machine.next(value);
         break;
     }
@@ -71,29 +69,56 @@ Last piece of code is:
 {% highlight javascript %}
 function go(machine) {
   var gen = machine();
-  var goGen_ = go_(gen, gen.next());
-  goGen_.next();
-  goGen_.next(goGen_);
+  gen.next();
+  var goIter_ = go_(gen, gen.next(gen));
+  goIter_.next();
+  goIter_.next(goIter_);
 }
 {% endhighlight %}
 
 Now we can change "taking thread" code to postpone it's execution and do something what would have not really worked without changes:
 
 {% highlight javascript %}
-setTimeout(
-  go.bind(this, function* () {
-    while(true) {
-      var val = yield take(c);
-      if(val == null) {
-        break;
-      } else {
-        console.log("process two took", val);
-      }
+function timeout(iter, t) {
+  var canContinue = false
+  setTimeout(() => canContinue = true, t);
+
+  return function() {
+    if(canContinue === true) {
+      return ["continue", null];
+    } else {
+      return ["park", null];
     }
-  })
-, 1000);
+  };
+}
+
+go(function* () {
+  var genIter = yield;
+  for(var i = 0; i < 10; i++) {
+    yield put(c, i);
+    console.log("process one put", i);
+
+    yield timeout(genIter, Math.random() * 1000);
+  }
+  yield put(c, null);
+});
+
+
+go(function* () {
+  var genIter = yield;
+  while(true) {
+    var val = yield take(c);
+    if(val == null) {
+      break;
+    } else {
+      console.log("process two took", val);
+    }
+
+    yield timeout(genIter, Math.random() * 1000);
+  }
+});
 {% endhighlight %}
 
-This only illustrates example of adding and reading more than one element to/from channel in non-blocking manner. But we can create much more advanced scenario.
+This illustrates example of adding and reading more than one element to/from channel in non-blocking manner and also way of executing *timeout* function synchronously. But we can create much more advanced scenario.
 
 [nolen-post]: http://swannodette.github.io/2013/08/24/es6-generators-and-csp/
