@@ -4,4 +4,4 @@ title: About
 permalink: /about/
 ---
 
-This is personal blog of Wiktor Sierociński.
+Hi, my name is Wiktor. I live in Warsaw, Poland. Please leave me an e-mail whenever you have any questions.
