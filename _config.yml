@@ -9,7 +9,6 @@
 title: wsieroci's things
 email: w.sierocinski-atgmail.com
 description: > # this means to ignore newlines until "baseurl:"
-  This is personal blog of Wiktor Sierociński.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "http://wsieroci.github.io" # the base hostname & protocol for your site
 github_username:  wsieroci

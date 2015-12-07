@@ -62,9 +62,9 @@
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>Today I have stumbled upon David Nolen’s <a href="http://swannodette.github.io/2013/08/24/es6-generators-and-csp/">post</a> titled <code class="highlighter-rouge">ES6 Generators Deliver Go Style Concurrency</code>. As title suggests it is post about trying to accomplish “Go style parallel programming model” in JavaScript, by using one of the most powerful ES6 features called Generators. However, I found this implementation quite “poor” because it forces “Go channels” (implemented as arrays) to have only one element inside. I was wondering for a while how this solution could be improved and I found quite simple solution I want to present here.</p>
+    <p>Today I have stumbled upon David Nolen’s <a href="http://swannodette.github.io/2013/08/24/es6-generators-and-csp/">post</a> titled <code class="highlighter-rouge">ES6 Generators Deliver Go Style Concurrency</code>. As title suggests it is post about trying to accomplish “Go style parallel programming model” in JavaScript, by using one of the most powerful ES6 features called Generators. However, I found this implementation quite “reduced” because it forces “Go channels” (implemented as arrays) to have only one element inside. I was wondering for a while how this solution could be improved and I found quite simple solution I want to present here.</p>
 
-<p>For those of you who don’t know <code class="highlighter-rouge">Go</code>: it is a language whose one of the core features is possibility to spawn “Go routines”. They are lightweight threads. Communication between them can be done using Channels. Channels are basicly queues. When one thread wants to read from a channel and channel is empty then it has to wait. Putting and getting data from channels are atomic operations. By using this style of programming we can write synchronous code in asynchronous environment. What is quite neat.</p>
+<p>For those of you who don’t know <code class="highlighter-rouge">Go</code>: it is a language whose one of the core features is possibility to spawn “Go routines”. They are lightweight threads, which can share memory. Communication between them can be done using Channels. Channels are basicly queues. When one thread wants to read from a channel and channel is empty then it has to wait. Putting and getting data from channels are atomic operations. By using this style of programming we can write synchronous code in asynchronous environment. What is quite neat.</p>
 
 <p>Basic problem with David’s code is here:</p>
 
@@ -93,56 +93,78 @@
 <p>But to make it working we have to change code in other places too. Primaraly, we have to change <em>go_</em> function and make it a generator itself:</p>
 
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span><span class="o">*</span> <span class="nx">go_</span><span class="p">(</span><span class="nx">machine</span><span class="p">,</span> <span class="nx">step</span><span class="p">)</span> <span class="p">{</span>
-  <span class="kd">var</span> <span class="nx">goGen_</span> <span class="o">=</span> <span class="k">yield</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">goIter_</span> <span class="o">=</span> <span class="k">yield</span><span class="p">;</span>
 
   <span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="nx">step</span><span class="p">.</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">arr</span>   <span class="o">=</span> <span class="nx">step</span><span class="p">.</span><span class="nx">value</span><span class="p">(),</span>
         <span class="nx">state</span> <span class="o">=</span> <span class="nx">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
         <span class="nx">value</span> <span class="o">=</span> <span class="nx">arr</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
 
-    <span class="kd">function</span> <span class="nx">next</span><span class="p">()</span> <span class="p">{</span>
-      <span class="nx">goGen_</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span>
-    <span class="p">}</span>
+    <span class="kd">var</span> <span class="nx">goIterNext</span> <span class="o">=</span> <span class="nx">goIter_</span><span class="p">.</span><span class="nx">next</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="nx">goIter_</span><span class="p">);</span>
 
     <span class="k">switch</span> <span class="p">(</span><span class="nx">state</span><span class="p">)</span> <span class="p">{</span>
       <span class="k">case</span> <span class="s2">"park"</span><span class="err">:</span>
-        <span class="k">yield</span> <span class="nx">setImmediate</span><span class="p">(</span><span class="nx">next</span><span class="p">);</span>
+        <span class="k">yield</span> <span class="nx">setImmediate</span><span class="p">(</span><span class="nx">goIterNext</span><span class="p">);</span>
         <span class="k">break</span><span class="p">;</span>
       <span class="k">case</span> <span class="s2">"continue"</span><span class="err">:</span>
-        <span class="k">yield</span> <span class="nx">setImmediate</span><span class="p">(</span><span class="nx">next</span><span class="p">);</span>
+        <span class="k">yield</span> <span class="nx">setImmediate</span><span class="p">(</span><span class="nx">goIterNext</span><span class="p">);</span>
         <span class="nx">step</span> <span class="o">=</span> <span class="nx">machine</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
         <span class="k">break</span><span class="p">;</span>
     <span class="p">}</span>
   <span class="p">}</span>
 <span class="p">}</span></code></pre></figure>
 
-<p>By yielding asynchronous callback <em>next</em> by <em>setImmediate</em> we are pausing and resuming “local event loop” of our “Go routine”. This way we let our “Go routines” work in “parallel” - of course JavaScript doesn’t let true concurrency without Web Workers.</p>
+<p>By yielding asynchronous callback <em>goIterNext</em> by <em>setImmediate</em> we are pausing and resuming “local event loop” of our “Go routine”. This way we let our “Go routines” work in “parallel” - of course JavaScript doesn’t let true concurrency without Web Workers.</p>
 
 <p>Last piece of code is:</p>
 
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">go</span><span class="p">(</span><span class="nx">machine</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">var</span> <span class="nx">gen</span> <span class="o">=</span> <span class="nx">machine</span><span class="p">();</span>
-  <span class="kd">var</span> <span class="nx">goGen_</span> <span class="o">=</span> <span class="nx">go_</span><span class="p">(</span><span class="nx">gen</span><span class="p">,</span> <span class="nx">gen</span><span class="p">.</span><span class="nx">next</span><span class="p">());</span>
-  <span class="nx">goGen_</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span>
-  <span class="nx">goGen_</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="nx">goGen_</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">goIter_</span> <span class="o">=</span> <span class="nx">go_</span><span class="p">(</span><span class="nx">gen</span><span class="p">,</span> <span class="nx">gen</span><span class="p">.</span><span class="nx">next</span><span class="p">());</span>
+  <span class="nx">goIter_</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span>
+  <span class="nx">goIter_</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="nx">goIter_</span><span class="p">);</span>
 <span class="p">}</span></code></pre></figure>
 
-<p>Now we can change “taking thread” code to postpone it’s execution and do something what would have not really worked without changes:</p>
+<p>Now we can do something what would have not really worked without changes:</p>
 
-<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">setTimeout</span><span class="p">(</span>
-  <span class="nx">go</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="kd">function</span><span class="o">*</span> <span class="p">()</span> <span class="p">{</span>
-    <span class="k">while</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span> <span class="p">{</span>
-      <span class="kd">var</span> <span class="nx">val</span> <span class="o">=</span> <span class="k">yield</span> <span class="nx">take</span><span class="p">(</span><span class="nx">c</span><span class="p">);</span>
-      <span class="k">if</span><span class="p">(</span><span class="nx">val</span> <span class="o">==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">break</span><span class="p">;</span>
-      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"process two took"</span><span class="p">,</span> <span class="nx">val</span><span class="p">);</span>
-      <span class="p">}</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">timeout</span><span class="p">(</span><span class="nx">t</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">canContinue</span> <span class="o">=</span> <span class="kc">false</span>
+  <span class="nx">setTimeout</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">canContinue</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">t</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">canContinue</span> <span class="o">===</span> <span class="kc">true</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="p">[</span><span class="s2">"continue"</span><span class="p">,</span> <span class="kc">null</span><span class="p">];</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="p">[</span><span class="s2">"park"</span><span class="p">,</span> <span class="kc">null</span><span class="p">];</span>
     <span class="p">}</span>
-  <span class="p">})</span>
-<span class="p">,</span> <span class="mi">1000</span><span class="p">);</span></code></pre></figure>
+  <span class="p">};</span>
+<span class="p">}</span>
 
-<p>This only illustrates example of adding and reading more than one element to/from channel in non-blocking manner. But we can create much more advanced scenario.</p>
+<span class="nx">go</span><span class="p">(</span><span class="kd">function</span><span class="o">*</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">yield</span> <span class="nx">put</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">i</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"process one put"</span><span class="p">,</span> <span class="nx">i</span><span class="p">);</span>
+
+    <span class="k">yield</span> <span class="nx">timeout</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">yield</span> <span class="nx">put</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="kc">null</span><span class="p">);</span>
+<span class="p">});</span>
+
+
+<span class="nx">go</span><span class="p">(</span><span class="kd">function</span><span class="o">*</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">while</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">val</span> <span class="o">=</span> <span class="k">yield</span> <span class="nx">take</span><span class="p">(</span><span class="nx">c</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">val</span> <span class="o">==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"process two took"</span><span class="p">,</span> <span class="nx">val</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">yield</span> <span class="nx">timeout</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">});</span></code></pre></figure>
+
+<p>This illustrates example of adding and reading more than one element to/from channel in non-blocking manner, operations which are being executed in parallel. We are using also synchronous timeout, what is quite nice. But we can create much more advanced scenario.</p>
 
 
   </div>
@@ -181,8 +203,7 @@
       </div>
 
       <div class="footer-col footer-col-3">
-        <p>This is personal blog of Wiktor Sierociński.
-</p>
+        <p></p>
       </div>
     </div>
 
