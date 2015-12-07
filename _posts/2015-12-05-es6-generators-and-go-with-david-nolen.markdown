@@ -69,8 +69,7 @@ Last piece of code is:
 {% highlight javascript %}
 function go(machine) {
   var gen = machine();
-  gen.next();
-  var goIter_ = go_(gen, gen.next(gen));
+  var goIter_ = go_(gen, gen.next());
   goIter_.next();
   goIter_.next(goIter_);
 }
@@ -79,7 +78,7 @@ function go(machine) {
 Now we can do something what would have not really worked without changes:
 
 {% highlight javascript %}
-function timeout(iter, t) {
+function timeout(t) {
   var canContinue = false
   setTimeout(() => canContinue = true, t);
 
@@ -93,19 +92,17 @@ function timeout(iter, t) {
 }
 
 go(function* () {
-  var genIter = yield;
   for(var i = 0; i < 10; i++) {
     yield put(c, i);
     console.log("process one put", i);
 
-    yield timeout(genIter, Math.random() * 1000);
+    yield timeout(Math.random() * 1000);
   }
   yield put(c, null);
 });
 
 
 go(function* () {
-  var genIter = yield;
   while(true) {
     var val = yield take(c);
     if(val == null) {
@@ -114,13 +111,11 @@ go(function* () {
       console.log("process two took", val);
     }
 
-    yield timeout(genIter, Math.random() * 1000);
+    yield timeout(Math.random() * 1000);
   }
 });
 {% endhighlight %}
 
-One thing to notice is that we are passing one additional argument to our "Go routines": iterator of "Go routine" itself. We can pass it by using *yield* as the first expression of our "Go routines". This way it can have additional capabilities, like way of doing synchronous timeout.
-
-This illustrates example of adding and reading more than one element to/from channel in non-blocking manner, operations which are being executed in parallel. But we can create much more advanced scenario.
+This illustrates example of adding and reading more than one element to/from channel in non-blocking manner, operations which are being executed in parallel. We are using also synchronous timeout, what is quite nice. But we can create much more advanced scenario.
 
 [nolen-post]: http://swannodette.github.io/2013/08/24/es6-generators-and-csp/
