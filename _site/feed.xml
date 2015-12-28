@@ -5,9 +5,111 @@
     <description></description>
     <link>http://wsieroci.github.io/</link>
     <atom:link href="http://wsieroci.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 07 Dec 2015 14:34:46 -0800</pubDate>
-    <lastBuildDate>Mon, 07 Dec 2015 14:34:46 -0800</lastBuildDate>
+    <pubDate>Mon, 28 Dec 2015 15:56:36 -0800</pubDate>
+    <lastBuildDate>Mon, 28 Dec 2015 15:56:36 -0800</lastBuildDate>
     <generator>Jekyll v3.0.1</generator>
+    
+      <item>
+        <title>Problem of Eric Elliott</title>
+        <description>&lt;p&gt;Eric Elliott is well known JavaScript programmer and blogger. He is advocate of&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;favor object composition over class inheritance.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;mantra in JavaScript - famous and correct sentance from “Gang of Four” book. He is also author of such words:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;If constructor behavior is the frying pan, classical inheritance isn’t the fire; it’s the fire from Dante’s seventh circle of hell.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;He proposed a solution:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;I settled on an interesting idea: a factory function that helps you produce factory functions that you can inherit from and compose together. I called the composable factories “stamps,” and the library, “Stampit.” (…) or simply cloning objects by copying properties from a source object to a new object (e.g. &lt;code class=&quot;highlighter-rouge&quot;&gt;Object.assign()&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;$.extend()&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;_.extend()&lt;/code&gt;, etc…).&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Many JS developers refer to his ideas to implement such approach in their own programming journeys.&lt;/p&gt;
+
+&lt;p&gt;However, there is one small problem:&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Eric Elliott completely misunderstands what object composition is and he is using misrepresented and twisted terms in his posts.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;How it could be? I had not realized this too until I stumbled upon &lt;a href=&quot;https://www.reddit.com/r/javascript/comments/3oy9c3/composition_vs_eric_elliott/&quot;&gt;this&lt;/a&gt; post on Reddit (author’s &lt;a href=&quot;https://medium.com/@jeffm712/&quot;&gt;blog&lt;/a&gt;). Author shows that what Elliott really means by &lt;em&gt;classical inheritance&lt;/em&gt; is actually &lt;em&gt;not multiple inheritance&lt;/em&gt;, and what really Elliott thinks he solves by using StampIt or &lt;code class=&quot;highlighter-rouge&quot;&gt;_.extend()&lt;/code&gt; is actually form of &lt;em&gt;multiple inheritance&lt;/em&gt; not a form of &lt;em&gt;object composition&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;So Elliott thinks he is using object composition when he really is using multiple inheritance.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Definition of &lt;em&gt;object composition&lt;/em&gt; from “Gang of Four” (to which Elliot is referring):&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Object composition is defined dynamically at run-time through objects acquiring references to other objects.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;For example (object contains has-a relationships):&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;author&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;createAuthor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;posts&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;createPosts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Definition of &lt;em&gt;inheritance&lt;/em&gt; (from Wikipedia, but is industry standard):&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Inheritance is when an object or class is based on another object (prototypal inheritance) or class (class-based inheritance), using the same implementation (inheriting from an object or class) specifying implementation to maintain the same behavior (realizing an interface; inheriting behavior).&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Hence using &lt;em&gt;_.extend()&lt;/em&gt; or &lt;em&gt;Stampit&lt;/em&gt; is a form of &lt;em&gt;inheritance&lt;/em&gt; (multiple), because we are inheriting behaviors and components interfaces become your interface. It does not matter that they do it by shallow copying.&lt;/p&gt;
+
+&lt;p&gt;Moreover, &lt;em&gt;multiple inheritance&lt;/em&gt; suffers from some problem, called “diamond problem” (from Wikipedia):&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;“diamond problem” is an ambiguity that arises when two classes B and C inherit from A, and class D inherits from both B and C. If there is a method in A that B and C have overridden, and D does not override it, then which version of the method does D inherit: that of B, or that of C?&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;em&gt;_.extend()&lt;/em&gt; or &lt;em&gt;Stampit&lt;/em&gt; “solve” this problem by just overwriting methods of the same name by last object in the call.&lt;/p&gt;
+
+&lt;p&gt;Author of Reddit’s post shows how &lt;em&gt;Stampit&lt;/em&gt; gives completely unexpected results due to this problem:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;storable&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;stampit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;methods&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;read&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;storable::read&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+
+    &lt;span class=&quot;na&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;storable::write&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;transmitter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;stampit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;compose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;storable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;methods&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;transmitter::write&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;receiver&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;stampit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;compose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;storable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;methods&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;read&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;receiver::read&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;radio&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;stampit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;compose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;transmitter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;receiver&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;radio&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;read&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// receiver::read -- ok&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;radio&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// storable::write -- wait, what? tramsmitter::write lost due to diamond problem&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Thanks &lt;a href=&quot;https://medium.com/@jeffm712/&quot;&gt;JeffM&lt;/a&gt; for pointing this out!&lt;/p&gt;
+
+</description>
+        <pubDate>Sun, 27 Dec 2015 17:14:29 -0800</pubDate>
+        <link>http://wsieroci.github.io/elliott/inheritance/2015/12/27/problem-of-eric-elliott.html</link>
+        <guid isPermaLink="true">http://wsieroci.github.io/elliott/inheritance/2015/12/27/problem-of-eric-elliott.html</guid>
+        
+        
+        <category>elliott</category>
+        
+        <category>inheritance</category>
+        
+      </item>
     
       <item>
         <title>ES6 generators and Go style in JavaScript with David Nolen</title>
