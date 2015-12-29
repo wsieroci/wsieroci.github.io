@@ -4,7 +4,7 @@ title:  "Problem of Eric Elliott"
 date:   2015-12-28 01:14:29
 categories: elliott inheritance
 ---
-Eric Elliott is well known JavaScript programmer and blogger. He is advocate of 
+Eric Elliott is well known JavaScript programmer and blogger, author of book "Programming JavaScript Applications". He is advocate of 
 
 > favor object composition over class inheritance.
 
