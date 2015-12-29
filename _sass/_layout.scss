@@ -8,6 +8,21 @@
 
     // Positioning context for the mobile navigation icon
     position: relative;
+    .banner {
+        display: inline-block; 
+        margin-left: 20px; 
+        margin-top: 5px;
+    }
+}
+
+@include media-query-min(800px) {
+    .site-header {
+        .banner {
+            display: inline-block; 
+            margin-left: 70px; 
+            margin-top: 5px;
+        }
+    }
 }
 
 .site-title {
