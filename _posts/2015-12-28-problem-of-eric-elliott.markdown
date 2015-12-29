@@ -82,7 +82,7 @@ radio().read(); // receiver::read -- ok
 radio().write(); // storable::write -- wait, what? tramsmitter::write lost due to diamond problem
 {% endhighlight %}
 
-Thanks [JeffM][author-blog] for pointing this out! And Eric, please stop doing this!
+Thanks [JeffM][author-blog] for pointing this out!
 
 [reddit-post]: https://www.reddit.com/r/javascript/comments/3oy9c3/composition_vs_eric_elliott/
 
