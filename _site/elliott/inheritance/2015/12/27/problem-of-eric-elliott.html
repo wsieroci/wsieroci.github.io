@@ -7,11 +7,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Problem of Eric Elliott</title>
-  <meta name="description" content="Eric Elliott is well known JavaScript programmer and blogger. He is advocate of">
+  <meta name="description" content="Eric Elliott is well known JavaScript programmer and blogger, author of book “Programming JavaScript Applications”. He is advocate of">
   <link href='https://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="/css/main.css">
   <link rel="canonical" href="http://wsieroci.github.io/elliott/inheritance/2015/12/27/problem-of-eric-elliott.html">
   <link rel="alternate" type="application/rss+xml" title="wsieroci's things" href="http://wsieroci.github.io/feed.xml">
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-71764192-1', 'auto');
+  ga('send', 'pageview');
+
+  </script>
 </head>
 
 
@@ -62,7 +73,7 @@
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>Eric Elliott is well known JavaScript programmer and blogger. He is advocate of</p>
+    <p>Eric Elliott is well known JavaScript programmer and blogger, author of book “Programming JavaScript Applications”. He is advocate of</p>
 
 <blockquote>
   <p>favor object composition over class inheritance.</p>
@@ -80,13 +91,13 @@
   <p>I settled on an interesting idea: a factory function that helps you produce factory functions that you can inherit from and compose together. I called the composable factories “stamps,” and the library, “Stampit.” (…) or simply cloning objects by copying properties from a source object to a new object (e.g. <code class="highlighter-rouge">Object.assign()</code>, <code class="highlighter-rouge">$.extend()</code>, <code class="highlighter-rouge">_.extend()</code>, etc…).</p>
 </blockquote>
 
-<p>Many JS developers refer to his ideas to implement such approach in their own programming journeys.</p>
+<p>A bunch of JS developers refer to his ideas to implement such approach in their own programming journeys.</p>
 
 <p>However, there is one small problem:</p>
 
 <p><strong>Eric Elliott completely misunderstands what object composition is and he is using misrepresented and twisted terms in his posts.</strong></p>
 
-<p>How it could be? I had not realized this too until I stumbled upon <a href="https://www.reddit.com/r/javascript/comments/3oy9c3/composition_vs_eric_elliott/">this</a> post on Reddit (author’s <a href="https://medium.com/@jeffm712/">blog</a>). Author shows that what Elliott really means by <em>classical inheritance</em> is actually <em>not multiple inheritance</em>, and what really Elliott thinks he solves by using StampIt or <code class="highlighter-rouge">_.extend()</code> is actually form of <em>multiple inheritance</em> not a form of <em>object composition</em>.</p>
+<p>How it could be? I had not realized this too until I stumbled upon <a href="https://www.reddit.com/r/javascript/comments/3oy9c3/composition_vs_eric_elliott/">this</a> post on Reddit (author’s <a href="https://medium.com/@jeffm712/">blog</a>). Author shows that what Elliott really means by <em>classical inheritance</em> is actually <em>single inheritance</em>, and what really Elliott thinks he solves by using StampIt or <code class="highlighter-rouge">_.extend()</code> is actually form of <em>multiple inheritance</em> not a form of <em>object composition</em>.</p>
 
 <p><strong>So Elliott thinks he is using object composition when he really is using multiple inheritance.</strong></p>
 
@@ -148,7 +159,7 @@
 <span class="nx">radio</span><span class="p">().</span><span class="nx">read</span><span class="p">();</span> <span class="c1">// receiver::read -- ok</span>
 <span class="nx">radio</span><span class="p">().</span><span class="nx">write</span><span class="p">();</span> <span class="c1">// storable::write -- wait, what? tramsmitter::write lost due to diamond problem</span></code></pre></figure>
 
-<p>Thanks <a href="https://medium.com/@jeffm712/">JeffM</a> for pointing this out!</p>
+<p>Thanks <a href="https://medium.com/@jeffm712/">JeffM</a> for pointing this out! And Eric, please stop doing this!</p>
 
 
   </div>
