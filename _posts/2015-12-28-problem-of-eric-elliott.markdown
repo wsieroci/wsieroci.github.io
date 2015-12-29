@@ -22,7 +22,7 @@ However, there is one small problem:
 
 **Eric Elliott completely misunderstands what object composition is and he is using misrepresented and twisted terms in his posts.**
 
-How it could be? I had not realized this too until I stumbled upon [this][reddit-post] post on Reddit (author's [blog][author-blog]). Author shows that what Elliott really means by *classical inheritance* is actually *not multiple inheritance*, and what really Elliott thinks he solves by using StampIt or `_.extend()` is actually form of *multiple inheritance* not a form of *object composition*.
+How it could be? I had not realized this too until I stumbled upon [this][reddit-post] post on Reddit (author's [blog][author-blog]). Author shows that what Elliott really means by *classical inheritance* is actually *single inheritance*, and what really Elliott thinks he solves by using StampIt or `_.extend()` is actually form of *multiple inheritance* not a form of *object composition*.
 
 **So Elliott thinks he is using object composition when he really is using multiple inheritance.**
 
