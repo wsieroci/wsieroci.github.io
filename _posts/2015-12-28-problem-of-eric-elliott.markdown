@@ -16,7 +16,7 @@ He proposed a solution:
 
 > I settled on an interesting idea: a factory function that helps you produce factory functions that you can inherit from and compose together. I called the composable factories “stamps,” and the library, “Stampit.” (...) or simply cloning objects by copying properties from a source object to a new object (e.g. `Object.assign()`, `$.extend()`, `_.extend()`, etc…). 
 
-Ton of JS developers refer to his ideas to implement such approach in their own programming journeys. 
+A bunch of JS developers refer to his ideas to implement such approach in their own programming journeys. 
 
 However, there is one small problem: 
 
