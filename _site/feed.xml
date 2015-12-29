@@ -5,8 +5,8 @@
     <description></description>
     <link>http://wsieroci.github.io/</link>
     <atom:link href="http://wsieroci.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 28 Dec 2015 22:03:33 -0800</pubDate>
-    <lastBuildDate>Mon, 28 Dec 2015 22:03:33 -0800</lastBuildDate>
+    <pubDate>Tue, 29 Dec 2015 01:48:30 -0800</pubDate>
+    <lastBuildDate>Tue, 29 Dec 2015 01:48:30 -0800</lastBuildDate>
     <generator>Jekyll v3.0.1</generator>
     
       <item>
@@ -97,7 +97,7 @@
 &lt;span class=&quot;nx&quot;&gt;radio&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;read&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// receiver::read -- ok&lt;/span&gt;
 &lt;span class=&quot;nx&quot;&gt;radio&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// storable::write -- wait, what? tramsmitter::write lost due to diamond problem&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;Thanks &lt;a href=&quot;https://medium.com/@jeffm712/&quot;&gt;JeffM&lt;/a&gt; for pointing this out! And Eric, please stop doing this!&lt;/p&gt;
+&lt;p&gt;Thanks &lt;a href=&quot;https://medium.com/@jeffm712/&quot;&gt;JeffM&lt;/a&gt; for pointing this out!&lt;/p&gt;
 
 </description>
         <pubDate>Sun, 27 Dec 2015 17:14:29 -0800</pubDate>
