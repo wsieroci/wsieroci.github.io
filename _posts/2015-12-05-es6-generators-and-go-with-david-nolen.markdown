@@ -4,9 +4,9 @@ title:  "ES6 generators and Go style in JavaScript with David Nolen"
 date:   2015-12-05 23:14:29 -0800
 categories: nolen es6 go generators
 ---
-Today I have stumbled upon David Nolen's [post][nolen-post] titled `ES6 Generators Deliver Go Style Concurrency`. As title suggests it is post about trying to accomplish "Go style parallel programming model" in JavaScript, by using one of the most powerful ES6 features called Generators. However, I found this implementation quite "reduced" because it forces "Go channels" (implemented as arrays) to have only one element inside. Moreover, putting message to channel blocks execution of "Go routine" until someone will read this message from channel - as Go works. However, I would like to have non-blocking "putting mechanism". I was wondering for a while how this solution could be changed and I found quite simple solution I want to present here.   
+Today I have stumbled upon David Nolen's [post][nolen-post] titled `ES6 Generators Deliver Go Style Concurrency`. As title suggests it is post about trying to accomplish "Go style parallel programming model" in JavaScript, by using one of the most powerful ES6 features called Generators. However, I found this implementation quite "reduced" because it forces "Go channels" (implemented as arrays) to have only one element inside. Moreover, putting message to channel blocks execution of "Go routine" until someone will take this message from channel - as Go works. However, I would like to have non-blocking "putting mechanism". I was wondering for a while how this solution could be changed and I found quite simple solution I want to present here.   
 
-For those of you who don't know `Go`: it is a language whose one of the core features is possibility to spawn "Go routines". They are lightweight threads, which can share memory. Communication between them can be done using Channels. Channels are basicly queues. When one thread wants to read from a channel and channel is empty then it has to wait. Putting and getting data from channels are atomic operations. By using this style of programming we can write synchronous code in asynchronous environment. What is quite neat. 
+For those of you who don't know `Go`: it is a language whose one of the core features is possibility to spawn "Go routines". They are lightweight threads, which can share memory. Communication between them can be done using Channels. Channels are basicly queues. When one thread wants to take message from a channel and channel is empty then it has to wait. Putting and getting data from channels are atomic operations. By using this style of programming we can write synchronous code in asynchronous environment. What is quite neat. 
 
 Basic problem with David's code is here:  
 
@@ -116,6 +116,6 @@ go(function* () {
 });
 {% endhighlight %}
 
-This illustrates example of adding and reading more than one element to/from channel in non-blocking manner, operations which are being executed in "parallel". We are using also synchronous timeout, what is quite nice. But we can create much more advanced scenario.
+This illustrates example of putting and taking more than one element to/from channel in non-blocking manner, operations which are being executed in "parallel". We are using also synchronous timeout, what is quite nice. But we can create much more advanced scenario.
 
 [nolen-post]: http://swannodette.github.io/2013/08/24/es6-generators-and-csp/
