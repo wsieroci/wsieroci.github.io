@@ -62,7 +62,7 @@ function* go_(machine, step) {
 }
 {% endhighlight %}
 
-By yielding asynchronous callback *goIterNext* by *setImmediate* we are pausing and resuming "local event loop" of our "Go routine". This way we let our "Go routines" work in "parallel" - of course JavaScript doesn't let true concurrency without Web Workers.
+By yielding asynchronous callback *goIterNext* by *setImmediate* we are pausing and resuming "local event loop" of our "Go routine". This way we let our "Go routines" work concurrently - of course JavaScript doesn't let true parallelism without Web Workers.
 
 Last piece of code is:
 
@@ -116,6 +116,6 @@ go(function* () {
 });
 {% endhighlight %}
 
-This illustrates example of putting and taking more than one element to/from channel in non-blocking manner, operations which are being executed in "parallel". We are using also synchronous timeout, what is quite nice. But we can create much more advanced scenario.
+This illustrates example of putting and taking more than one element to/from channel in non-blocking manner, operations which are being executed concurrently. We are using also synchronous timeout, what is quite nice. But we can create much more advanced scenario.
 
 [nolen-post]: http://swannodette.github.io/2013/08/24/es6-generators-and-csp/
